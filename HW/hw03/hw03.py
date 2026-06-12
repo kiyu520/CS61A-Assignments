@@ -25,6 +25,8 @@ def num_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n==0: return 0
+    return 1+num_eights(n//10) if n%10==8 else num_eights(n//10)
 
 
 def digit_distance(n):
@@ -47,6 +49,11 @@ def digit_distance(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    # if n//10==0:return 0
+    # ten=n//10%10
+    # one=n%10
+    # return abs(ten-one)+digit_distance(n//10)
+    return abs(n//10%10-n%10)+digit_distance(n//10) if n//10!=0 else 0
 
 
 def interleaved_sum(n, odd_func, even_func):
@@ -71,6 +78,14 @@ def interleaved_sum(n, odd_func, even_func):
     True
     """
     "*** YOUR CODE HERE ***"
+    def sum_from(k):
+        if k>n:
+            return 0
+        elif k==n:
+            return odd_func(k)
+        else: return odd_func(k)+even_func(k+1)+sum_from(k+2)
+    return sum_from(1)
+
 
 
 def next_smaller_dollar(bill):
@@ -107,6 +122,11 @@ def count_dollars(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(amount,now):
+        if amount==0:return 1
+        elif amount<0 or now==None:return 0
+        else:return helper(amount-now,now)+helper(amount,next_smaller_dollar(now))
+    return helper(total,100)
 
 
 def next_larger_dollar(bill):
@@ -143,6 +163,11 @@ def count_dollars_upward(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(amount,now):
+        if amount==0:return 1
+        elif amount<0 or now==None:return 0
+        else:return helper(amount-now,now)+helper(amount,next_larger_dollar(now))
+    return helper(total,1)
 
 
 def print_move(origin, destination):
