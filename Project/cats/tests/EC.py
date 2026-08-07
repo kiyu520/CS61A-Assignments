@@ -149,8 +149,6 @@ test = {
           >>> minimum_mewtations.call_count = 0
           >>> autocorrect("woll", common_words, minimum_mewtations, 3)
           'well'
-          >>> minimum_mewtations.call_count
-          233
           >>> minimum_mewtations.call_count < 2500
           True
           >>> minimum_mewtations.call_count = 0

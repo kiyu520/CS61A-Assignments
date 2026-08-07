@@ -10,6 +10,16 @@ def hailstone(n):
     1
     """
     "*** YOUR CODE HERE ***"
+    while True:
+        if n==1:
+            yield 1
+        else:
+            yield n
+            if n%2==0:
+                n=n//2
+            else:
+                n=n*3+1
+    
 
 
 def merge(a, b):
@@ -31,10 +41,17 @@ def merge(a, b):
     while True:
         if a_val == b_val:
             "*** YOUR CODE HERE ***"
+            yield a_val
+            a_val = next(a)
+            b_val = next(b)
         elif a_val < b_val:
             "*** YOUR CODE HERE ***"
+            yield a_val
+            a_val=next(a)
         else:
             "*** YOUR CODE HERE ***"
+            yield b_val
+            b_val = next(b)
 
 
 def stair_ways(n):
@@ -51,8 +68,14 @@ def stair_ways(n):
     []
     """
     "*** YOUR CODE HERE ***"
-
-
+    if n==0 :
+        yield []
+    elif n > 0:
+        for rest in stair_ways(n-1):
+            yield [1] + rest
+        for rest in stair_ways(n-2):
+            yield [2] + rest
+    # 这解法妙啊，结合了生成器可被遍历的特性
 def yield_paths(t, value):
     """
     Yields all possible paths from the root of t to a node with the label
@@ -89,10 +112,10 @@ def yield_paths(t, value):
     [[0, 2], [0, 2, 1, 2]]
     """
     if label(t) == value:
-        yield ____
+        yield [value]
     for b in branches(t):
-        for ____ in ____:
-            yield ____
+        for rest in yield_paths(b,value):
+            yield [label(t)]+rest
 
 
 
