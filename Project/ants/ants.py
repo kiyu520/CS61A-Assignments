@@ -27,6 +27,8 @@ class Place:
         # Phase 1: Add an entrance to the exit
         # BEGIN Problem 2
         "*** YOUR CODE HERE ***"
+        if exit is not None:
+            exit.entrance=self
         # END Problem 2
 
     def add_insect(self, insect):
@@ -143,6 +145,8 @@ class HarvesterAnt(Ant):
     name = 'Harvester'
     implemented = True
     # OVERRIDE CLASS ATTRIBUTES HERE
+    food_cost=2
+    health=1
 
     def action(self, gamestate):
         """Produce 1 additional food for the colony.
@@ -151,6 +155,7 @@ class HarvesterAnt(Ant):
         """
         # BEGIN Problem 1
         "*** YOUR CODE HERE ***"
+        gamestate.food+=1
         # END Problem 1
 
 
@@ -160,6 +165,10 @@ class ThrowerAnt(Ant):
     name = 'Thrower'
     implemented = True
     damage = 1
+    food_cost=3
+    health=1
+    lower_bound=0
+    upper_bound=float('inf')-1
     # ADD/OVERRIDE CLASS ATTRIBUTES HERE
 
     def nearest_bee(self):
@@ -169,7 +178,18 @@ class ThrowerAnt(Ant):
         This method returns None if there is no such Bee (or none in range).
         """
         # BEGIN Problem 3 and 4
-        return random_bee(self.place.bees) # REPLACE THIS LINE
+        place=self.place
+        count=-1
+        while place.entrance is not None or place.is_hive==False :
+            count+=1
+            if count<self.lower_bound:
+                place=place.entrance
+                continue
+            if count>self.upper_bound:break
+            if place.bees:
+                return random_bee(place.bees)
+            place=place.entrance
+        return None
         # END Problem 3 and 4
 
     def throw_at(self, target):
@@ -200,8 +220,10 @@ class ShortThrower(ThrowerAnt):
     name = 'Short'
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
+    upper_bound=3
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+
     # END Problem 4
 
 
@@ -211,8 +233,9 @@ class LongThrower(ThrowerAnt):
     name = 'Long'
     food_cost = 2
     # OVERRIDE CLASS ATTRIBUTES HERE
+    lower_bound=5
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 4
 
 
